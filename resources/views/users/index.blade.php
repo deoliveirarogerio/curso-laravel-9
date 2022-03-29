@@ -46,7 +46,14 @@
       <tbody>
     @foreach ($users as $user)
         <tr>
-            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{ $user->name }}</td>
+            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                @if ($user->image)
+                    <img src="{{ url("storage/{$user->image}") }}" alt="{{ $user->name }}" class="object-cover w-20">
+                @else
+                    <img src="{{ url("images/favicon.ico") }}" alt="{{ $user->name }}" class="object-cover w-20">
+                @endif
+                {{ $user->name }}
+            </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{ $user->email }}</td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <a href="{{ route('users.edit', $user->id) }}" class="bg-green-200 rounded-full py-2 px-6">Editar</a>
@@ -55,17 +62,17 @@
                 <a href="{{ route('users.show', $user->id) }}" class="bg-orange-200 rounded-full py-2 px-6">Detalhes</a>
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-              <a href="{{ route('comments.index', $user->id) }}" class="bg-blue-200 rounded-full py-2 px-6">Anotações ({{ $user->comments->count() }})</a>
-          </td>
+                <a href="{{ route('comments.index', $user->id) }}" class="bg-blue-200 rounded-full py-2 px-6">Anotações ({{ $user->comments->count() }})</a>
+            </td>
         </tr>
     @endforeach
     </tbody>
 </table>
 
 <div class="py-4">
-  {{ $users->appends([
-      'search' => request()->get('search', '')
-  ])->links() }}
+    {{ $users->appends([
+        'search' => request()->get('search', '')
+    ])->links() }}
 </div>
 
 @endsection
